@@ -1,18 +1,21 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { LogIn, Sparkles } from "lucide-react";
 
 export default function LoginPage() {
+  const [supabase]=useState(()=>createClient());
+  const router=useRouter();
   const [mode,setMode]=useState<"login"|"signup">("login"),[email,setEmail]=useState(""),[password,setPassword]=useState(""),[username,setUsername]=useState(""),[message,setMessage]=useState(""),[busy,setBusy]=useState(false);
 
   async function submit(event:FormEvent<HTMLFormElement>) {
-    event.preventDefault();setBusy(true);setMessage("");const supabase=createClient();
+    event.preventDefault();setBusy(true);setMessage("");
     if(mode==="login"){
       const {error}=await supabase.auth.signInWithPassword({email,password});
-      if(error)setMessage(error.message);else window.location.href="/";
+      if(error)setMessage(error.message);else router.push("/");
     }else{
       const {data,error}=await supabase.auth.signUp({email,password,options:{data:{username:username.trim().toLowerCase(),display_name:username.trim()}}});
       if(error||!data.user)setMessage(error?.message??"Vertex could not create the account.");
