@@ -1,0 +1,15 @@
+[package]
+name="vertex-desktop"
+version="0.1.0"
+description="Vertex desktop game launcher"
+authors=["Vertex"]
+edition="2024"
+
+[build-dependencies]
+tauri-build="2.6.3"
+
+[dependencies]
+tauri={version="2.11.5",features=[]}
+
+[features]
+custom-protocol=["tauri/custom-protocol"]
