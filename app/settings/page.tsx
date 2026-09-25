@@ -1,30 +1,38 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { LogOut, Save, Settings2 } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { ThemePicker } from "@/components/theme-picker";
 
 export default function SettingsPage() {
-  const supabase=createClient();
+  const [supabase]=useState(()=>createClient());
+  const router=useRouter();
   const [profile,setProfile]=useState<{username:string;display_name:string;bio:string;avatar_url:string|null} | null>(null);
   const [displayName,setDisplayName]=useState(""),[bio,setBio]=useState(""),[avatar,setAvatar]=useState(""),[email,setEmail]=useState(""),[message,setMessage]=useState(""),[busy,setBusy]=useState(false);
 
-  useEffect(()=>{(async()=>{
-    const {data:{user}}=await supabase.auth.getUser();
-    if(!user){window.location.href="/login";return}
-    setEmail(user.email ?? "");
-    const {data}=await supabase.from("vertex_profiles").select("username,display_name,bio,avatar_url").eq("user_id",user.id).single();
-    if(data){setProfile(data);setDisplayName(data.display_name);setBio(data.bio);setAvatar(data.avatar_url??"")}
-  })()},[]);
+  useEffect(()=>{
+    let cancelled=false;
+    const run=async()=>{
+      const {data:{user}}=await supabase.auth.getUser();
+      if(!user){router.push("/login");return}
+      const {data}=await supabase.from("vertex_profiles").select("username,display_name,bio,avatar_url").eq("user_id",user.id).single();
+      if(cancelled)return;
+      setEmail(user.email ?? "");
+      if(data){setProfile(data);setDisplayName(data.display_name);setBio(data.bio);setAvatar(data.avatar_url??"")}
+    };
+    void run();
+    return()=>{cancelled=true};
+  },[router,supabase]);
 
   async function save(){
     setBusy(true);setMessage("");
     const {error}=await supabase.rpc("vertex_update_own_profile",{p_display_name:displayName,p_bio:bio,p_avatar_url:avatar||null});
     setMessage(error?error.message:"Profile saved.");setBusy(false);
   }
-  async function signOut(){await supabase.auth.signOut();window.location.href="/";}
+  async function signOut(){await supabase.auth.signOut();router.push("/");}
   if(!profile)return <main className="page"><div className="card empty">Loading settings…</div></main>;
 
   return <main className="page" style={{maxWidth:1000}}>
