@@ -8,20 +8,11 @@ const themes = [
 ] as const;
 
 export function ThemePicker(){
-  const [theme,setTheme]=useState("vertex-dark");
-  useEffect(()=>{
-    const saved=localStorage.getItem("vertex-theme")??"vertex-dark";
-    setTheme(saved);
-    document.documentElement.dataset.theme=saved;
-  },[]);
-  function change(value:string){
-    setTheme(value);
-    localStorage.setItem("vertex-theme",value);
-    document.documentElement.dataset.theme=value;
-  }
+  const [theme,setTheme]=useState(()=>typeof window==="undefined"?"vertex-dark":localStorage.getItem("vertex-theme")??"vertex-dark");
+  useEffect(()=>{document.documentElement.dataset.theme=theme;localStorage.setItem("vertex-theme",theme)},[theme]);
   return <div className="field">
     <label className="label">Theme</label>
-    <select className="select" value={theme} onChange={e=>change(e.target.value)}>
+    <select className="select" value={theme} onChange={e=>setTheme(e.target.value)}>
       {themes.map(([id,label])=><option key={id} value={id}>{label}</option>)}
     </select>
   </div>;
