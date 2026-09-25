@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, MessageCircle, Send } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -9,26 +10,46 @@ type Conversation={id:string;title:string|null;created_by:string};
 type Message={id:string;conversation_id:string;sender_id:string;content:string;created_at:string};
 
 export default function MessagesPage(){
-  const supabase=createClient();
+  const [supabase]=useState(()=>createClient());
+  const router=useRouter();
   const [userId,setUserId]=useState(""),[convos,setConvos]=useState<Conversation[]>([]),[selected,setSelected]=useState(""),[messages,setMessages]=useState<Message[]>([]),[target,setTarget]=useState(""),[draft,setDraft]=useState(""),[status,setStatus]=useState("");
 
-  async function loadConvos(){
-    const {data:{user}}=await supabase.auth.getUser();
-    if(!user){window.location.href="/login";return}
-    setUserId(user.id);
-    const {data}=await supabase.from("vertex_conversations").select("id,title,created_by").order("created_at",{ascending:false});
-    setConvos(data??[]); if(!selected && data?.[0])setSelected(data[0].id);
-  }
-  async function loadMessages(id:string){
-    const {data}=await supabase.from("vertex_messages").select("id,conversation_id,sender_id,content,created_at").eq("conversation_id",id).order("created_at",{ascending:true});
-    setMessages(data??[]);
-  }
-  useEffect(()=>{loadConvos()},[]);
-  useEffect(()=>{if(selected)loadMessages(selected)},[selected]);
-  useEffect(()=>{if(!selected)return;const channel=supabase.channel("vertex-messages-"+selected).on("postgres_changes",{event:"INSERT",schema:"public",table:"vertex_messages",filter:"conversation_id=eq."+selected},payload=>setMessages(prev=>[...prev,payload.new as Message])).subscribe();return()=>{supabase.removeChannel(channel)}},[selected]);
+  useEffect(()=>{
+    let cancelled=false;
+    const run=async()=>{
+      const {data:{user}}=await supabase.auth.getUser();
+      if(!user){router.push("/login");return}
+      const {data}=await supabase.from("vertex_conversations").select("id,title,created_by").order("created_at",{ascending:false});
+      if(cancelled)return;
+      setUserId(user.id);setConvos(data??[]);
+      if(!selected && data?.[0])setSelected(data[0].id);
+    };
+    void run();
+    return()=>{cancelled=true};
+  },[router,selected,supabase]);
+
+  useEffect(()=>{
+    if(!selected)return;
+    let cancelled=false;
+    const run=async()=>{
+      const {data}=await supabase.from("vertex_messages").select("id,conversation_id,sender_id,content,created_at").eq("conversation_id",selected).order("created_at",{ascending:true});
+      if(!cancelled)setMessages(data??[]);
+    };
+    void run();
+    return()=>{cancelled=true};
+  },[selected,supabase]);
+
+  useEffect(()=>{
+    if(!selected)return;
+    const channel=supabase.channel("vertex-messages-"+selected)
+      .on("postgres_changes",{event:"INSERT",schema:"public",table:"vertex_messages",filter:"conversation_id=eq."+selected},payload=>setMessages(prev=>[...prev,payload.new as Message]))
+      .subscribe();
+    return()=>{void supabase.removeChannel(channel)};
+  },[selected,supabase]);
 
   async function startConversation(e:FormEvent){
-    e.preventDefault();setStatus("");const name=target.trim().replace(/^@/,"").toLowerCase();if(!name)return;
+    e.preventDefault();setStatus("");
+    const name=target.trim().replace(/^@/,"").toLowerCase();if(!name)return;
     const {data:person}=await supabase.from("vertex_profiles").select("user_id,display_name").eq("username",name).maybeSingle();
     if(!person){setStatus("That Vertex username was not found.");return}
     if(person.user_id===userId){setStatus("You cannot start a conversation with yourself.");return}
@@ -36,12 +57,17 @@ export default function MessagesPage(){
     if(error||!conversation){setStatus(error?.message??"Could not create the conversation.");return}
     const {error:memberError}=await supabase.from("vertex_conversation_members").insert([{conversation_id:conversation.id,user_id:userId},{conversation_id:conversation.id,user_id:person.user_id}]);
     if(memberError){setStatus(memberError.message);return}
-    setTarget("");await loadConvos();setSelected(conversation.id);
+    setTarget("");setSelected(conversation.id);
   }
+
   async function send(e:FormEvent){
-    e.preventDefault();if(!draft.trim()||!selected)return;const content=draft.trim();setDraft("");
-    const {error}=await supabase.from("vertex_messages").insert({conversation_id:selected,sender_id:userId,content});if(error)setStatus(error.message);
+    e.preventDefault();
+    if(!draft.trim()||!selected)return;
+    const content=draft.trim();setDraft("");
+    const {error}=await supabase.from("vertex_messages").insert({conversation_id:selected,sender_id:userId,content});
+    if(error)setStatus(error.message);
   }
+
   return <main className="page">
     <Link href="/" className="btn sm ghost"><ArrowLeft size={14}/>Home</Link>
     <div className="section-head" style={{marginTop:14}}><div><div className="kicker">Social</div><h1 style={{fontSize:38,letterSpacing:"-.04em",margin:"7px 0 0"}}>Messages</h1></div></div>
