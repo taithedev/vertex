@@ -494,3 +494,64 @@ footer{
   .stats{grid-template-columns:1fr}
   .profile{max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 }
+
+.currency-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  height:38px;
+  padding:0 11px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--panel);
+  color:var(--text-soft);
+  font-weight:700;
+}
+.currency-pill:hover{background:var(--panel-hover);color:var(--text)}
+.currency-symbol{color:var(--accent-soft)}
+.auth-google{
+  width:100%;
+  justify-content:center;
+}
+.support-shell{display:grid;gap:12px}
+.support-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+.support-title{font-weight:800;font-size:18px}
+.support-sub{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.5}
+.support-messages{
+  height:340px;
+  overflow:auto;
+  display:grid;
+  align-content:start;
+  gap:9px;
+  padding:10px 2px;
+}
+.support-msg{
+  max-width:86%;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:var(--panel-2);
+  color:var(--text-soft);
+  line-height:1.55;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.support-msg.user{
+  justify-self:end;
+  background:var(--accent-bg);
+  border-color:#493f64;
+  color:var(--text);
+}
+.support-compose{display:flex;gap:8px}
+.support-compose .input{flex:1}
+@media(max-width:760px){
+  .currency-pill{display:none}
+  .support-messages{height:300px}
+  .support-compose{flex-direction:column}
+}
