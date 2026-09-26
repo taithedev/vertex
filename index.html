@@ -1,49 +1,79 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#08090d"><meta name="description" content="Vertex — play, discover and connect.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0c10">
+<meta name="description" content="Vertex — play, discover and connect.">
 <title>Vertex</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='25' fill='%2308090d'/%3E%3Cpath d='M18 24h64L50 78z' fill='none' stroke='%23a78bfa' stroke-width='10' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230b0c10'/%3E%3Cpath d='M21 25h58L50 76z' fill='none' stroke='%23b79cff' stroke-width='9' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-<div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
-<div id="toast"></div>
+<div id="toast" aria-live="polite"></div>
+
 <div id="app">
-<aside id="side">
-  <button class="brand" data-r="home"><span class="brand-icon">V</span><span>Vertex</span></button>
-  <nav class="main-nav">
-    <button data-r="home">⌂<span>Home</span></button>
-    <button data-r="friends">♧<span>Friends</span></button>
-    <button data-r="games">◈<span>Catalog</span></button>
-    <button data-r="avatar">◉<span>Avatar</span></button>
-    <button data-r="groups">◎<span>Groups</span></button>
-    <div class="nav-divider"></div>
-    <button data-r="studio">▦<span>Studio</span><b class="beta">BETA</b></button>
-    <button data-r="marketplace">◇<span>Marketplace</span></button>
-    <button data-r="messages">☷<span>Messages</span></button>
-    <button data-r="notifications">♢<span>Notifications</span></button>
-    <div class="nav-divider"></div>
-    <button data-r="settings">⚙<span>Settings</span></button>
-  </nav>
-  <div id="account"></div>
-</aside>
-<main>
-<header>
-  <button id="menu" class="icon-button">☰</button>
-  <div class="search"><span>⌕</span><input id="search" placeholder="Search players, games, groups..." autocomplete="off"></div>
-  <div class="header-actions"><button class="download" data-r="download">Download</button><button id="top-profile" class="profile">Sign in</button></div>
-</header>
-<section id="view"></section>
-<footer>
-  <div><strong>Vertex</strong><span>Play. Create. Connect.</span></div>
-  <div class="footer-links"><button data-r="community">Community Guidelines</button><button data-r="terms">Terms</button><button data-r="privacy">Privacy</button><button data-r="copyright">Copyright</button></div>
-  <span>© 2026 Vertex</span>
-</footer>
-</main>
+  <aside id="side" aria-label="Primary navigation">
+    <button class="brand" data-r="home" aria-label="Vertex home">
+      <span class="brand-mark">V</span><span class="brand-name">Vertex</span>
+    </button>
+
+    <nav class="main-nav">
+      <button data-r="home"><span class="nav-icon">⌂</span><span>Home</span></button>
+      <button data-r="friends"><span class="nav-icon">♧</span><span>Friends</span></button>
+      <button data-r="games"><span class="nav-icon">▦</span><span>Catalog</span></button>
+      <button data-r="avatar"><span class="nav-icon">◉</span><span>Avatar</span></button>
+      <button data-r="groups"><span class="nav-icon">◎</span><span>Groups</span></button>
+
+      <div class="nav-divider"></div>
+
+      <button data-r="studio"><span class="nav-icon">▧</span><span>Studio</span><b class="beta">BETA</b></button>
+      <button data-r="download"><span class="nav-icon">↓</span><span>Download</span></button>
+
+      <div class="nav-divider"></div>
+
+      <button data-r="marketplace"><span class="nav-icon">◇</span><span>Marketplace</span></button>
+      <button data-r="messages"><span class="nav-icon">□</span><span>Messages</span></button>
+      <button data-r="notifications"><span class="nav-icon">♢</span><span>Notifications</span></button>
+      <button data-r="settings"><span class="nav-icon">⚙</span><span>Settings</span></button>
+    </nav>
+
+    <div id="account"></div>
+  </aside>
+
+  <main>
+    <header>
+      <button id="menu" class="icon-button" aria-label="Open navigation">☰</button>
+      <div class="search">
+        <span aria-hidden="true">⌕</span>
+        <input id="search" placeholder="Search players..." autocomplete="off" spellcheck="false">
+      </div>
+      <div class="header-actions">
+        <button class="download" data-r="download">Download</button>
+        <button id="top-profile" class="profile">Sign in</button>
+      </div>
+    </header>
+
+    <section id="view"></section>
+
+    <footer>
+      <div class="footer-brand">
+        <strong>Vertex</strong>
+        <span>Play. Create. Connect.</span>
+      </div>
+      <div class="footer-links">
+        <button data-r="community">Community Guidelines</button>
+        <button data-r="terms">Terms</button>
+        <button data-r="privacy">Privacy</button>
+        <button data-r="copyright">Copyright</button>
+      </div>
+      <span>© 2026 Vertex</span>
+    </footer>
+  </main>
 </div>
+
 <div id="modal"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./app.js"></script>
 </body>
