@@ -2,6 +2,7 @@
 const SB_URL="https://zqvntzvugfbvdwkoxfbm.supabase.co";
 const SB_KEY="sb_publishable_hXc8J0cDIXTKJn5eQVJQrw_jsyYJjYy";
 const db=supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+window.__vertexDb=db;
 const S={u:null,p:null,g:[],currency:0,r:location.hash.slice(1)||"home",q:""};
 const $=(s,r=document)=>r.querySelector(s);
 const esc=x=>String(x??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
