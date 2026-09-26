@@ -17,7 +17,7 @@ async function load(){
     db.rpc("vertex_my_staff_role")
   ]);
   P=p.data||null;A=a.data?.config||{};staff=r.data?.[0]||null;
-  renderProfile();renderAvatar();bind();
+  renderProfile();renderAvatar();$("#account-theme").value=P?.theme||"dark";$("#account-accent").value=P?.accent_color||"#a98cff";bind();
 }
 
 function renderProfile(){
@@ -34,8 +34,8 @@ function renderProfile(){
     "<label class='field'>TikTok<input class='input' id='tiktok_url' value='"+esc(p.tiktok_url||"")+"' maxlength='300'></label>"+
     "<label class='field'>Instagram<input class='input' id='instagram_url' value='"+esc(p.instagram_url||"")+"' maxlength='300'></label>"+
     "<label class='field'>X<input class='input' id='x_url' value='"+esc(p.x_url||"")+"' maxlength='300'></label>"+
-    "<label class='field'>Discord<input class='input' id='discord_url' value='"+esc(p.discord_url||"")+"' maxlength='300'></label></div>";
-  $("#picture").innerHTML=(avatar?"<img class='pfp' src='"+esc(avatar)+"' alt=''>":"<div class='pfp fallback'>V</div>")+"<input class='input' id='pfp-file' type='file' accept='image/jpeg,image/png,image/gif,image/webp'><button class='btn primary' id='upload'>Upload profile picture</button>";
+     "<label class='field'>Discord<input class='input' id='discord_url' value='"+esc(p.discord_url||"")+"' maxlength='300'></label></div>";
+  $("#picture").innerHTML=(avatar?"<img class='pfp' src='"+esc(avatar)+"' alt=''>":"<div class='pfp fallback'>V</div>")+"<input class='input' id='pfp-file' type='file' accept='image/jpeg,image/png,image/gif,image/webp'><button class='btn primary' id='upload'>Upload profile picture</button><input class='input' id='banner-file' type='file' accept='image/jpeg,image/png,image/gif,image/webp'><button class='btn' id='upload-banner'>Upload profile banner</button>";
 }
 
 function avatarHtml(){
@@ -81,6 +81,26 @@ async function upload(){
   setStatus("Profile picture updated",true);await load();
 }
 
+async function saveTheme(){
+  const theme=$("#account-theme").value,accent=$("#account-accent").value||"#a98cff";
+  if(window.VertexTheme)window.VertexTheme.apply(theme,accent);
+  const r=await db.rpc("vertex_update_own_preferences",{p_theme:theme,p_accent_color:accent});
+  if(r.error)return setStatus(r.error.message);
+  P.theme=theme;P.accent_color=accent;setStatus("Appearance saved",true);
+}
+async function uploadBanner(){
+  const file=$("#banner-file")?.files?.[0];if(!file)return setStatus("Choose a banner image first.");
+  if(!/^image\/(jpeg|png|gif|webp)$/.test(file.type))return setStatus("Use JPG, PNG, GIF, or WebP.");
+  if(file.size>5*1024*1024)return setStatus("Banners must be 5 MB or smaller.");
+  const ext=(file.type.split("/")[1]||"png").replace("jpeg","jpg"),path=U.id+"/banner-"+Date.now()+"."+ext;
+  const r=await db.storage.from("avatars").upload(path,file,{contentType:file.type,upsert:false});
+  if(r.error)return setStatus(r.error.message);
+  const url=db.storage.from("avatars").getPublicUrl(path).data.publicUrl;
+  const s=await db.from("vertex_profiles").update({banner_url:url}).eq("user_id",U.id);
+  if(s.error)return setStatus(s.error.message);
+  setStatus("Profile banner updated",true);await load();
+}
+
 async function saveAvatar(){
   const config={...A};document.querySelectorAll("[data-avatar]").forEach(x=>config[x.dataset.avatar]=x.value);
   const r=await db.from("vertex_avatar_looks").upsert({user_id:U.id,config:config},{onConflict:"user_id"});
@@ -95,7 +115,7 @@ async function daily(){
 }
 
 function bind(){
-  $("#save-profile").onclick=saveProfile;$("#upload").onclick=upload;$("#save-avatar").onclick=saveAvatar;
+  $("#save-profile").onclick=saveProfile;$("#upload").onclick=upload;$("#upload-banner").onclick=uploadBanner;$("#save-avatar").onclick=saveAvatar;$("#save-theme").onclick=saveTheme;
   document.querySelectorAll("[data-avatar]").forEach(x=>x.onchange=preview);
   $("#daily").onclick=daily;
   $("#signout").onclick=async()=>{await db.auth.signOut();location.href="./signin.html"};
