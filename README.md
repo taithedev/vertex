@@ -58,7 +58,17 @@ Studio scene editing, script editing, and the larger new-game creation expansion
 
 The dedicated Vertex server-control and matchmaking backend is preserved; the browser runtime is not presented as a Roblox-scale authoritative multiplayer simulation.
 
-## Accounts, currency, and support
+## Accounts, profiles, avatars, currency, owner controls, and support
+
+- Dedicated static `signin.html` and `signup.html` pages
+- Google OAuth uses Supabase Auth and the Supabase Site URL as the post-login destination
+- Email signup passes username, display name, and date of birth to the server-side profile trigger
+- Vertex profiles support profile pictures, bio, website/YouTube/TikTok/Instagram/X/Discord links
+- The Avatar page saves a customizable block-style player look in `vertex_avatar_looks`
+- The first auth account on an otherwise ownerless project is bootstrapped as the Vertex owner
+- Owner Console supports protected user search, moderation state changes, currency adjustments, staff roles, and audit logging
+- Owner actions are performed through server-side database functions rather than trusting browser-only owner checks
+
 
 - Email/password accounts with 12+ signup validation
 - Google OAuth sign-in button using Supabase Auth
