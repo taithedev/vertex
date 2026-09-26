@@ -555,3 +555,7 @@ footer{
   .support-messages{height:300px}
   .support-compose{flex-direction:column}
 }
+#account .account{width:100%;display:block;text-align:left;background:var(--panel);font-weight:inherit}
+.account-balance{color:var(--accent-soft)!important}
+.form-divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:11px}
+.form-divider::before,.form-divider::after{content:"";height:1px;flex:1;background:var(--border)}
