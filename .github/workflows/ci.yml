@@ -24,6 +24,8 @@ jobs:
 
       - name: Validate JavaScript syntax
         run: node --check app.js
+      - name: Validate auth JavaScript syntax
+        run: node --check auth.js
 
       - name: Validate required static files
         run: |
@@ -31,6 +33,10 @@ jobs:
           test -f styles.css
           test -f app.js
           test -f vercel.json
+          test -f signin.html
+          test -f signup.html
+          test -f auth.js
+          test -f auth.css
           test -d supabase/migrations
           ! grep -q '"framework"[[:space:]]*:[[:space:]]*"nextjs"' vercel.json
           ! grep -q '"next"' index.html
