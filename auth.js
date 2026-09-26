@@ -58,7 +58,7 @@ async function boot(){
    const email=$("#email").value.trim().toLowerCase();
    if(!email)return setStatus("Enter your email first.","bad");
    setStatus("Sending password reset…");
-   const {error}=await db.auth.resetPasswordForEmail(email);
+   const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:new URL("./index.html#reset-password",location.href).href});
    if(error)return setStatus(humanError(error),"bad");
    setStatus("If that account exists, a password reset email was sent.","good");
  });
