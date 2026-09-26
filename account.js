@@ -22,7 +22,7 @@ async function load(){
 
 function renderProfile(){
   const p=P||{},avatar=p.avatar_url||"";
-  $("#profile").innerHTML="<img class='pfp "+(avatar?"":"fallback")+"' src='"+esc(avatar)+"' alt='' onerror='this.style.display="none"'>"+
+  $("#profile").innerHTML="<img class='pfp "+(avatar?"":"fallback")+"' src='"+esc(avatar)+"' alt='' onerror='this.style.display=\"none\"'>"+
     "<div><h1 style='margin:0'>"+esc(p.display_name||"Vertex Player")+"</h1><div class='handle'>@"+esc(p.username||"player")+"</div><p class='bio'>"+esc(p.bio||"Add a bio to your profile.")+"</p></div>";
   $("#fields").innerHTML=
     "<label class='field'>Display name<input class='input' id='display' maxlength='40' value='"+esc(p.display_name||"")+"'></label>"+
