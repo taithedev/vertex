@@ -82,7 +82,10 @@ The dedicated Vertex server-control and matchmaking backend is preserved; the br
 
 ### External provider setup
 
-Google OAuth requires the Google provider to be enabled in the Supabase Auth dashboard and its OAuth client/redirect configuration to be registered. Supabase documents the web flow and provider setup here:
-https://supabase.com/docs/guides/auth/social-login/auth-google
+Google OAuth requires the Google provider to be enabled in Supabase Authentication and a Google Cloud OAuth Web application client. The Google client uses the Supabase callback:
+https://zqvntzvugfbvdwkoxfbm.supabase.co/auth/v1/callback
 
-Vertex Support requires the Supabase Edge Function secret `GROQ_API_KEY`. An optional `VERTEX_SUPPORT_MODEL` secret can override the default model.
+Vertex's dedicated signin.html and signup.html pages start Google OAuth without a hard-coded deployment URL. Supabase sends the user back to the project's configured Site URL, so keep that Site URL pointed at the stable production Vertex domain rather than a temporary Vercel deployment hostname.
+
+Vertex Support requires the Supabase Edge Function secret GROQ_API_KEY. An optional VERTEX_SUPPORT_MODEL secret can override the default model.
+
