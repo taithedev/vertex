@@ -1,13 +1,13 @@
 <!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b0c10"><title>Sign in — Vertex</title><link rel="stylesheet" href="./auth.css"></head><body data-mode="signin">
 <div class="auth-shell">
   <section class="auth-brand"><div class="brand-top"><div class="brand-mark">V</div><div class="brand-name">Vertex</div></div><div class="auth-copy"><div class="eyebrow">Welcome back</div><h1>Play. Create. Connect.</h1><p>Sign in to your Vertex account to keep your profile, games, friends, inventory and Vertex Coins in one place.</p><div class="feature-row"><div class="feature"><b>Google or email</b><span>Use your existing account with a fast OAuth flow or password sign-in.</span></div><div class="feature"><b>Your identity</b><span>Keep your display name, username, profile picture, bio and social links together.</span></div></div></div><div class="eyebrow">Vertex · 12+</div></section>
-  <section class="auth-panel"><div class="auth-card"><span class="age">12+</span><h2>Sign in to Vertex</h2><p class="auth-sub">Use Google or your Vertex email and password.</p><div class="form">
-    <button id="google" class="btn google">Continue with Google</button><div class="divider"><span>or</span></div>
+  <section class="auth-panel"><div class="auth-card"><span class="age">12+</span><h2>Sign in to Vertex</h2><p class="auth-sub">Use Google or your Vertex email and password.</p><form id="form" class="form">
+    <button id="google" type="button" class="btn google">Continue with Google</button><div class="divider"><span>or</span></div>
     <label class="field"><span>Email</span><input id="email" class="input" type="email" autocomplete="email" placeholder="you@example.com" required></label>
     <label class="field"><span>Password</span><input id="password" class="input" type="password" autocomplete="current-password" placeholder="Your password" required></label>
-    <button class="btn primary" type="submit" form="form">Sign in</button>
-    <div class="secondary-links"><button id="switch" class="link">Create an account</button><button id="forgot" class="link">Forgot password?</button></div>
+    <button class="btn primary" type="submit">Sign in</button>
+    <div class="secondary-links"><button id="switch" type="button" class="link">Create an account</button><button id="forgot" type="button" class="link">Forgot password?</button></div>
     <div id="status" class="status"></div><div class="legal">By signing in, you agree to follow Vertex Terms and Community Guidelines.</div>
-  </div><form id="form" hidden></form></div></section>
+  </form></div></section></section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./auth.js"></script></body></html>
