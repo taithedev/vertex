@@ -57,3 +57,22 @@ The player-facing shell follows the clean, compact structure of modern Vortex-st
 Studio scene editing, script editing, and the larger new-game creation expansion remain paused as previously requested.
 
 The dedicated Vertex server-control and matchmaking backend is preserved; the browser runtime is not presented as a Roblox-scale authoritative multiplayer simulation.
+
+## Accounts, currency, and support
+
+- Email/password accounts with 12+ signup validation
+- Google OAuth sign-in button using Supabase Auth
+- Vertex Coins account balance shown in the signed-in shell
+- 100-coin welcome grant for new auth users
+- 25-coin daily reward with a server-side 24-hour check
+- Marketplace spending remains server-controlled through Vertex currency functions
+- Settings includes the Vertex Support chat
+- Vertex Support uses a Supabase Edge Function with Groq and the current `openai/gpt-oss-120b` model by default
+- Groq credentials are server-side only; never put a Groq API key in browser JavaScript
+
+### External provider setup
+
+Google OAuth requires the Google provider to be enabled in the Supabase Auth dashboard and its OAuth client/redirect configuration to be registered. Supabase documents the web flow and provider setup here:
+https://supabase.com/docs/guides/auth/social-login/auth-google
+
+Vertex Support requires the Supabase Edge Function secret `GROQ_API_KEY`. An optional `VERTEX_SUPPORT_MODEL` secret can override the default model.
