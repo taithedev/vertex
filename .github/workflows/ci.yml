@@ -31,8 +31,13 @@ jobs:
           test -f styles.css
           test -f app.js
           test -f vercel.json
+          test -d supabase/migrations
           ! grep -q '"framework"[[:space:]]*:[[:space:]]*"nextjs"' vercel.json
           ! grep -q '"next"' index.html
 
       - name: Verify static entrypoint
         run: grep -q '<script src="./app.js"></script>' index.html
+
+      - name: Verify Vertex-only frontend schema references
+        run: |
+          ! grep -R -n -E '(^|[^A-Za-z])(premium_[A-Za-z0-9_]*|ai_(conversations|messages|request_windows)|chat_(conversations|messages|participants)|user_profiles)([^A-Za-z]|$)'             app.js index.html styles.css 2>/dev/null
