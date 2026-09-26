@@ -1,6 +1,6 @@
 # Vertex
 
-Vertex is a static browser gaming platform frontend backed by the existing Vertex Supabase backend.
+Vertex is a static browser gaming platform frontend backed by the dedicated Vertex Supabase project.
 
 ## Frontend architecture
 
@@ -14,22 +14,31 @@ There is intentionally **no Next.js, React build, npm build step, or server fram
 
 The browser uses the Supabase publishable key only. Server-only secrets stay in Supabase/Vercel infrastructure.
 
-## Existing backend
+## Vertex database
 
-The connected Supabase project remains the source of truth for:
+The connected Supabase project is the source of truth for Vertex accounts, games, social features, economy, moderation, analytics, assets, matchmaking, and server control.
 
-- Auth and profiles
-- Published games and game metadata
-- Likes and favorites
-- Analytics and visit tracking
-- Marketplace data
-- Messages and social data
-- Moderation and staff roles
-- Asset storage
-- Matchmaking and server control
-- Realtime platform presence
+The public application tables are now isolated under the `vertex_` namespace. The old Zuzify/Premium public tables and legacy premium auth trigger were removed from this project.
 
-The existing Vertex database uses the `vertex_` namespace for its platform tables and keeps RLS enabled.
+Current Vertex tables cover:
+
+- Auth profiles and staff roles
+- Games, versions, members, comments, likes, favorites
+- Achievements and badges
+- Follows, friendships, conversations, conversation members, messages
+- Currency accounts and transactions
+- Marketplace items and purchases
+- Inventory
+- Reports, moderation, and audit logs
+- Game analytics and visit keys
+- Game servers, server players, and matchmaking
+- Platform settings and notifications
+
+Supabase-managed `auth`, `storage`, and `realtime` system tables remain part of the hosted service and are not application tables.
+
+## Age and safety
+
+Vertex is a **12+ platform**. New profile dates of birth are checked server-side so a saved birth date cannot indicate an age below 12.
 
 ## Static deployment
 
@@ -39,12 +48,12 @@ This makes deployment independent of Next.js and avoids framework-specific build
 
 ## Quality checks
 
-GitHub Actions validates JavaScript syntax, required static files, the Vercel configuration, and the static entrypoint.
+GitHub Actions validates JavaScript syntax, required static files, the Vercel configuration, the static entrypoint, and frontend references to legacy Zuzify/Premium tables.
 
 ## Scope
 
-The rebuild improves the core player-facing shell, authentication flow, game discovery, game pages, browser runtime, profile settings, creator dashboard, analytics navigation, marketplace/messages/asset areas, and mobile layout.
+The player-facing shell follows the clean, compact structure of modern Vortex-style platforms: left navigation, top search/sign-in controls, catalog-first home content, creator/download access, and simple footer/legal navigation. Vertex keeps its own name, branding, data, and functionality rather than copying Vortex assets.
 
-As requested, Studio scene editing, script editing, and the larger new-game creation expansion remain paused.
+Studio scene editing, script editing, and the larger new-game creation expansion remain paused as previously requested.
 
-The existing dedicated server-control and matchmaking backend is preserved; the browser runtime is not presented as a Roblox-scale authoritative multiplayer simulation.
+The dedicated Vertex server-control and matchmaking backend is preserved; the browser runtime is not presented as a Roblox-scale authoritative multiplayer simulation.
