@@ -1,0 +1,26 @@
+:root{--accent:#a98cff;--accent-soft:#c8b8ff}
+html[data-theme="light"]{
+ --bg:#f6f7fb;--sidebar:#ffffff;--panel:#ffffff;--panel-2:#f0f2f7;--panel-hover:#eceef4;--border:#dfe2ea;--border-strong:#c8ccd8;--text:#161821;--text-soft:#444956;--muted:#707582;--accent:#6951d8;--accent-soft:#5d45c8;--accent-bg:#eeeaff; color-scheme:light;
+}
+html[data-theme="light"] body{background:var(--bg);color:var(--text)}
+html[data-theme="light"] header{background:rgba(255,255,255,.96)}
+html[data-theme="light"] .input,html[data-theme="light"] .area,html[data-theme="light"] .select{background:#fff;color:var(--text)}
+html[data-theme="light"] .cover{background:#e8eaf0}
+html[data-theme="light"] .tag,html[data-theme="light"] .chip{background:rgba(25,27,35,.72);color:#fff}
+html[data-theme="light"] .notice{background:#f0edff;border-color:#d8d0ff}
+html[data-theme="light"] .modalbg{background:rgba(20,22,30,.42)}
+html[data-theme="light"] .download,html[data-theme="light"] .btn.primary{background:#181a22;border-color:#181a22;color:#fff}
+html[data-theme="light"] .download:hover,html[data-theme="light"] .btn.primary:hover{background:#303341;border-color:#303341}
+html[data-theme="light"] .play{background:#111}
+html[data-theme="light"] .auth-shell{background:#fff;border-color:var(--border)}
+html[data-theme="light"] .auth-brand{background:#fafbfe;border-color:var(--border)}
+html[data-theme="light"] .auth-panel{background:#fff}
+html[data-theme="light"] .auth-card .input{background:#fff;color:var(--text)}
+html[data-theme="light"] .feature{background:#fff;border-color:var(--border)}
+html[data-theme="light"] .page{background:var(--bg)}
+html[data-theme="light"] .top{border-color:var(--border)}
+html[data-theme="light"] .page .panel{background:var(--panel);border-color:var(--border)}
+html[data-theme="light"] .page .input,html[data-theme="light"] .page .select,html[data-theme="light"] .page .area{background:#fff;color:var(--text);border-color:var(--border)}
+html[data-theme="light"] .owner-row{background:#fff}
+html[data-theme="light"] .group-banner{background:#e8eaf0}
+html[data-theme="light"] .group-post{background:#fff}
