@@ -107,15 +107,15 @@ begin
  return true;
 end $$;
 
-revoke all on function public.vertex_owner_dashboard_stats() from public,anon;
-grant execute on function public.vertex_owner_dashboard_stats() to authenticated;
-revoke all on function public.vertex_owner_list_games(text,integer) from public,anon;
-grant execute on function public.vertex_owner_list_games(text,integer) to authenticated;
-revoke all on function public.vertex_owner_set_game_status(uuid,text) from public,anon;
-grant execute on function public.vertex_owner_set_game_status(uuid,text) to authenticated;
-revoke all on function public.vertex_owner_set_platform_settings(text,text,boolean,text) from public,anon;
-grant execute on function public.vertex_owner_set_platform_settings(text,text,boolean,text) to authenticated;
-revoke all on function public.vertex_owner_list_reports(text,integer) from public,anon;
-grant execute on function public.vertex_owner_list_reports(text,integer) to authenticated;
-revoke all on function public.vertex_owner_resolve_report(uuid,text) from public,anon;
-grant execute on function public.vertex_owner_resolve_report(uuid,text) to authenticated;
+revoke all on function public.vertex_owner_dashboard_stats() from public,anon,authenticated;
+grant execute on function public.vertex_owner_dashboard_stats() to service_role;
+revoke all on function public.vertex_owner_list_games(text,integer) from public,anon,authenticated;
+grant execute on function public.vertex_owner_list_games(text,integer) to service_role;
+revoke all on function public.vertex_owner_set_game_status(uuid,text) from public,anon,authenticated;
+grant execute on function public.vertex_owner_set_game_status(uuid,text) to service_role;
+revoke all on function public.vertex_owner_set_platform_settings(text,text,boolean,text) from public,anon,authenticated;
+grant execute on function public.vertex_owner_set_platform_settings(text,text,boolean,text) to service_role;
+revoke all on function public.vertex_owner_list_reports(text,integer) from public,anon,authenticated;
+grant execute on function public.vertex_owner_list_reports(text,integer) to service_role;
+revoke all on function public.vertex_owner_resolve_report(uuid,text) from public,anon,authenticated;
+grant execute on function public.vertex_owner_resolve_report(uuid,text) to service_role;
